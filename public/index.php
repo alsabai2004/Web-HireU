@@ -12,6 +12,7 @@ use WebHireU\Controllers\AuthController;
 use WebHireU\Controllers\DashboardController;
 use WebHireU\Controllers\JobController;
 use WebHireU\Controllers\ApplicationController;
+use WebHireU\Controllers\EmployerController;
 use WebHireU\Controllers\CategoryController;
 
 $router = new Router();
@@ -20,6 +21,7 @@ $auth = new AuthController();
 $jobs = new JobController();
 $dashboard = new DashboardController();
 $applications = new ApplicationController();
+$employer = new EmployerController();
 $categories = new CategoryController();
 
 $router->get('/', fn() => Response::view('home'));
@@ -34,7 +36,8 @@ $router->get('/login', [$auth, 'login']);
 $router->post('/login', [$auth, 'login']);
 $router->get('/logout', [$auth, 'logout']);
 $router->get('/dashboard', [$dashboard, 'index']);
-$router->get('/employer', fn() => Response::view('employer/index'));
+$router->get('/employer', [$employer, 'index']);
+$router->post('/employer/delete', [$employer, 'delete']);
 $router->post('/apply', function(){
     if (!Security::verify($_POST['_csrf'] ?? '')) Response::text('Invalid security token',403);
     else (new ApplicationController)->apply();

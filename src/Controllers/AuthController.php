@@ -2,42 +2,29 @@
 namespace WebHireU\Controllers;
 
 use WebHireU\Core\Auth;
+use WebHireU\Core\Database;
 use WebHireU\Core\Response;
-use WebHireU\Models\User;
+use WebHireU\Core\Security;
+use WebHireU\Core\Validator;
 
 final class AuthController
 {
-    public function register(): void
+    public function login(): void
     {
+        if (Auth::check()) Response::redirect('/dashboard');
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $name = trim($_POST['name'] ?? '');
             $email = trim($_POST['email'] ?? '');
             $password = $_POST['password'] ?? '';
 
-            if ($name === '' || !filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($password) < 6) {
-                Response::view('auth/register', ['error' => 'Please enter valid information.']);
-                return;
-            }
+            $stmt = Database::connect()->prepare(
+                'SELECT * FROM users WHERE email = ? LIMIT 1'
+            );
+            $stmt->execute([$email]);
+            $user = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-            if (User::findByEmail($email)) {
-                Response::view('auth/register', ['error' => 'Email already exists.']);
-                return;
-            }
-
-            $id = User::create($name, $email, $password);
-            Auth::login(['id' => $id]);
-            Response::redirect('/dashboard');
-        }
-
-        Response::view('auth/register');
-    }
-
-    public function login(): void
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $user = User::findByEmail(trim($_POST['email'] ?? ''));
-
-            if ($user && \WebHireU\Core\Security::verify($_POST['password'] ?? '', $user['password'])) {
+            if ($user && password_verify($password, $user['password'])) {
+                unset($user['password']);
                 Auth::login($user);
                 Response::redirect('/dashboard');
             }
@@ -47,6 +34,41 @@ final class AuthController
         }
 
         Response::view('auth/login');
+    }
+
+    public function register(): void
+    {
+        if (Auth::check()) Response::redirect('/dashboard');
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $errors = Validator::required($_POST, ['name','email','password']);
+
+            if ($errors) {
+                Response::view('auth/register', ['errors' => $errors]);
+                return;
+            }
+
+            $db = Database::connect();
+            $stmt = $db->prepare(
+                'INSERT INTO users (name,email,password) VALUES (?,?,?)'
+            );
+
+            try {
+                $stmt->execute([
+                    trim($_POST['name']),
+                    trim($_POST['email']),
+                    password_hash($_POST['password'], PASSWORD_DEFAULT)
+                ]);
+                Response::redirect('/login');
+            } catch (\PDOException $e) {
+                Response::view('auth/register', [
+                    'error' => 'Email already exists.'
+                ]);
+            }
+            return;
+        }
+
+        Response::view('auth/register');
     }
 
     public function logout(): void
