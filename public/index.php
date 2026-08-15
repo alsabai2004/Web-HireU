@@ -43,6 +43,8 @@ $router->post('/apply', function(){
     else (new ApplicationController)->apply();
 });
 $router->get('/applications', [$applications, 'index']);
+$router->get('/applicants', [$applications, 'applicants']);
+$router->post('/application/status', [$applications, 'status']);
 $router->get('/categories', [$categories, 'index']);
 
 $router->dispatch(Request::method(), Request::path());
