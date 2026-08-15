@@ -6,7 +6,7 @@ class JobSetup
 {
     public static function run(): void
     {
-        $db = Database::connection();
+        $db = Database::connect();
 
         $db->exec(
             'CREATE TABLE IF NOT EXISTS jobs (
