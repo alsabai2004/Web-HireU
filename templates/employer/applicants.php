@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<?php require __DIR__ . '/../partials/nav.php'; ?>
+<?php require __DIR__ . '/partials/nav.php'; ?>
 
 <h1>Applicants</h1>
 

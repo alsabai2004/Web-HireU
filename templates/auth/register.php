@@ -3,7 +3,7 @@
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Register - Web-HireU</title></head>
 <body>
-<?php require __DIR__ . '/../partials/nav.php'; ?>
+<?php require __DIR__ . '/partials/nav.php'; ?>
 <h1>Create Account</h1>
 
 <?php if (!empty($error)): ?><p><?= htmlspecialchars($error) ?></p><?php endif; ?>

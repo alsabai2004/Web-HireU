@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="/css/web-hireu.css">
 </head>
 <body>
-<?php require __DIR__ . '/../partials/nav.php'; ?>
+<?php require __DIR__ . '/partials/nav.php'; ?>
 
 <h1>Employer Dashboard</h1>
 <a href="/create-job">+ Post New Job</a> |
