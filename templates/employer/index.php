@@ -10,7 +10,8 @@
 <?php require __DIR__ . '/../partials/nav.php'; ?>
 
 <h1>Employer Dashboard</h1>
-<a href="/create-job">+ Post New Job</a>
+<a href="/create-job">+ Post New Job</a> |
+<a href="/applicants">View Applicants</a>
 
 <?php foreach (($jobs ?? []) as $job): ?>
 <article>

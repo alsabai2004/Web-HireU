@@ -8,6 +8,9 @@
 <p>Welcome, <?= htmlspecialchars($user['name']) ?></p>
 <p><?= htmlspecialchars($user['email']) ?></p>
 <a href="/jobs">Browse Jobs</a> |
+<a href="/applications">My Applications</a> |
+<a href="/applicants">Applicants</a> |
+<a href="/employer">Employer Dashboard</a> |
 <a href="/create-job">Post a Job</a> |
 <a href="/logout">Logout</a>
 </body>

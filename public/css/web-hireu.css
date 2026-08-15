@@ -1,11 +1,14 @@
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f5f7fa;color:#1f2937}
-nav{padding:18px;background:#111827}
-nav a{color:#fff;text-decoration:none;margin-right:12px;font-weight:600}
-main,body>h1,body>form,body>article,body>p,body>hr{max-width:1000px;margin-left:auto;margin-right:auto}
-h1{margin-top:35px}
-article{background:#fff;padding:20px;margin-top:15px;border-radius:10px;box-shadow:0 2px 8px #0001}
-input,textarea,button{padding:10px;margin:6px 0;font:inherit}
-input,textarea{width:100%;max-width:600px}
-button{cursor:pointer;border:0;border-radius:6px;background:#111827;color:#fff}
+body{margin:0;font-family:Inter,Arial,sans-serif;background:#f8fafc;color:#172033}
+nav{display:flex;flex-wrap:wrap;gap:16px;align-items:center;padding:18px 6%;background:#111827}
+nav a{color:#fff;text-decoration:none;font-weight:600}
+nav a:first-child{font-size:22px;margin-right:auto}
+h1{margin:35px 0 20px}
+body>h1,body>p,body>article,body>form,body>hr,body>table{width:88%;max-width:1050px;margin-left:auto;margin-right:auto}
+article{background:#fff;padding:22px;margin-top:16px;border-radius:12px;box-shadow:0 4px 18px #00000010}
+input,textarea,select{width:100%;max-width:650px;padding:11px;margin:6px 0;border:1px solid #d1d5db;border-radius:7px}
+textarea{min-height:140px}
+button{padding:10px 16px;border:0;border-radius:7px;background:#111827;color:#fff;cursor:pointer}
+button:hover{opacity:.9}
 a{color:#2563eb}
+hr{border:0;border-top:1px solid #e5e7eb;margin-top:20px}
