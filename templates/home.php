@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Web-HireU</title>
-</head>
+<link rel="stylesheet" href="/css/web-hireu.css"></head>
 <body>
 <?php require __DIR__ . '/partials/nav.php'; ?>
     <h1>Web-HireU</h1>

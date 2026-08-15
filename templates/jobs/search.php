@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Jobs - Web-HireU</title>
-</head>
+<link rel="stylesheet" href="/css/web-hireu.css"></head>
 <body>
 
 <?php require dirname(__DIR__) . '/partials/nav.php'; ?>

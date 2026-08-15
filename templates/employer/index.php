@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Employer Dashboard - Web-HireU</title>
 <link rel="stylesheet" href="/css/web-hireu.css">
-</head>
+<link rel="stylesheet" href="/css/web-hireu.css"></head>
 <body>
 <?php require __DIR__ . '/partials/nav.php'; ?>
 

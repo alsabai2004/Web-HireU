@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title><?= htmlspecialchars($job['title']) ?> - Web-HireU</title></head>
+<title><?= htmlspecialchars($job['title']) ?> - Web-HireU</title><link rel="stylesheet" href="/css/web-hireu.css"></head>
 <body>
 <?php require __DIR__ . '/partials/nav.php'; ?>
 <h1><?= htmlspecialchars($job['title']) ?></h1>
