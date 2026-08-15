@@ -3,7 +3,7 @@
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Jobs - Web-HireU</title><link rel="stylesheet" href="/css/web-hireu.css"><link rel="stylesheet" href="/css/web-hireu.css"></head>
 <body>
-<?php require __DIR__ . '/partials/nav.php'; ?>
+<?php require __DIR__ . '/../partials/nav.php'; ?>
 <h1>Web-HireU Jobs</h1>
 <form method="get">
 <input name="q" placeholder="Search jobs..." value="<?= htmlspecialchars($_GET['q'] ?? '') ?>">

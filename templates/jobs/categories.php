@@ -6,7 +6,7 @@
 <title>Categories - Web-HireU</title>
 <link rel="stylesheet" href="/css/web-hireu.css"></head>
 <body>
-<?php require __DIR__ . '/partials/nav.php'; ?>
+<?php require __DIR__ . '/../partials/nav.php'; ?>
 <h1>Job Categories</h1>
 
 <?php foreach (($categories ?? []) as $category): ?>
