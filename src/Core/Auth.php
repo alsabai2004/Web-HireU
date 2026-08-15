@@ -10,6 +10,10 @@ final class Auth
 
     public static function logout(): void
     {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
         unset($_SESSION['user']);
         session_destroy();
     }
