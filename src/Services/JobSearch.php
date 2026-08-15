@@ -25,7 +25,7 @@ class JobSearch
 
         $sql .= ' ORDER BY id DESC';
 
-        $stmt = Database::connection()->prepare($sql);
+        $stmt = Database::connect()->prepare($sql);
         $stmt->execute($params);
 
         return $stmt->fetchAll();
