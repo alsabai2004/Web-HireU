@@ -1,8 +1,8 @@
 {
-    "name": "laravel/laravel",
+    "name": "web-hireu/web-hireu",
     "type": "project",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "description": "Web-HireU Job & Career Platform",
+    "keywords": ["job-board", "career", "web-hireu"],
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",

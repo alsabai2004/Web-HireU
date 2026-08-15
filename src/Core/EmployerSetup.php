@@ -1,0 +1,19 @@
+<?php
+
+namespace WebHireU\Core;
+
+class EmployerSetup
+{
+    public static function run(): void
+    {
+        Database::connection()->exec(
+            'CREATE TABLE IF NOT EXISTS employers (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL UNIQUE,
+                company TEXT NOT NULL,
+                description TEXT NOT NULL,
+                created_at TEXT NOT NULL
+            )'
+        );
+    }
+}

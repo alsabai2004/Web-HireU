@@ -1,27 +1,47 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers;
+use WebHireU\Core\Router;
+use WebHireU\Controllers\HomeController;
+use WebHireU\Controllers\AuthController;
+use WebHireU\Controllers\JobController;
+use WebHireU\Controllers\DashboardController;
+use WebHireU\Controllers\EmployerController;
+use WebHireU\Controllers\SearchController;
+use WebHireU\Controllers\CategoryController;
 
-Route::get('/', [Controllers\ListingController::class, 'index'])
-    ->name('listings.index');
+$router = new Router();
 
-Route::get('/new', [Controllers\ListingController::class, 'create'])
-    ->name('listings.create');
+$home = new HomeController();
+$auth = new AuthController();
+$jobs = new JobController();
+$dashboard = new DashboardController();
+$employer = new EmployerController();
+$search = new SearchController();
+$categories = new CategoryController();
 
-Route::post('/new', [Controllers\ListingController::class, 'store'])
-    ->name('listings.store');
+$router->get('/', [$home, 'index']);
 
-Route::get('/dashboard', function (\Illuminate\Http\Request $request) {
-    return view('dashboard', [
-        'listings' => $request->user()->listings
-    ]);
-})->middleware(['auth'])->name('dashboard');
+$router->get('/register', [$auth, 'register']);
+$router->post('/register', [$auth, 'store']);
 
-require __DIR__.'/auth.php';
+$router->get('/login', [$auth, 'login']);
+$router->post('/login', [$auth, 'authenticate']);
+$router->get('/logout', [$auth, 'logout']);
 
-Route::get('/{listing}', [Controllers\ListingController::class, 'show'])
-    ->name('listings.show');
+$router->get('/jobs', [$jobs, 'index']);
+$router->get('/job', [$jobs, 'show']);
+$router->post('/jobs/apply', [$jobs, 'apply']);
 
-Route::get('/{listing}/apply', [Controllers\ListingController::class, 'apply'])
-    ->name('listings.apply');
+$router->get('/dashboard', [$dashboard, 'index']);
+
+$router->get('/employer', [$employer, 'index']);
+$router->post('/employer', [$employer, 'store']);
+
+$router->get('/employer/jobs/create', [$employer, 'createJob']);
+$router->post('/employer/jobs', [$employer, 'storeJob']);
+$router->post('/employer/jobs/delete', [$employer, 'deleteJob']);
+
+$router->get('/search', [$search, 'index']);
+$router->get('/categories', [$categories, 'index']);
+
+return $router;
