@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="/css/web-hireu.css">
 <?php if (\WebHireU\Core\Auth::check()): ?>
     <nav>
         <a href="/">Home</a> |
