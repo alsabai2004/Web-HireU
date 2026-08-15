@@ -38,3 +38,11 @@ main,.container,.content{width:92%;margin:22px auto}
 .hero h1{font-size:30px}
 h1{font-size:28px}
 }
+
+.categories-page{max-width:1100px;margin:40px auto;padding:0 20px}
+.categories-page h1{margin-bottom:25px}
+.categories-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
+.category-card{display:block;background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:25px;color:#172033;text-decoration:none;box-shadow:0 4px 16px #0001;transition:.2s}
+.category-card:hover{transform:translateY(-3px);box-shadow:0 8px 25px #0002;text-decoration:none}
+.category-card h3{margin:0 0 8px;color:#172033}
+.category-card p{margin:0;color:#64748b}

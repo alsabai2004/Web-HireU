@@ -20,3 +20,4 @@
 <a href="/jobs">All Jobs</a>
 </body>
 </html>
+</main>
