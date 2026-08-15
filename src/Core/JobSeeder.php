@@ -8,25 +8,29 @@ class JobSeeder
 {
     public static function run(): void
     {
-        Job::create(
-            'PHP Backend Developer',
-            'Web-HireU',
-            'Remote',
-            'Build and maintain modern PHP web applications.'
-        );
+        $jobs = [
+            [
+                'title' => 'PHP Backend Developer',
+                'company' => 'Web-HireU',
+                'location' => 'Remote',
+                'description' => 'Build and maintain modern PHP web applications.',
+            ],
+            [
+                'title' => 'Network Security Engineer',
+                'company' => 'Web-HireU',
+                'location' => 'Remote',
+                'description' => 'Design, monitor and secure enterprise networks.',
+            ],
+            [
+                'title' => 'Frontend Developer',
+                'company' => 'Web-HireU',
+                'location' => 'Remote',
+                'description' => 'Create responsive and modern web interfaces.',
+            ],
+        ];
 
-        Job::create(
-            'Network Security Engineer',
-            'Web-HireU',
-            'Remote',
-            'Design, monitor and secure enterprise networks.'
-        );
-
-        Job::create(
-            'Frontend Developer',
-            'Web-HireU',
-            'Remote',
-            'Create responsive and modern web interfaces.'
-        );
+        foreach ($jobs as $job) {
+            Job::create($job);
+        }
     }
 }
