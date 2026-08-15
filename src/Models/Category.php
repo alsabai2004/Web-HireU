@@ -1,26 +1,22 @@
 <?php
-
 namespace WebHireU\Models;
-
 use WebHireU\Core\Database;
 
-class Category
+final class Category
 {
     public static function all(): array
     {
-        return Database::connection()
-            ->query('SELECT * FROM categories ORDER BY name')
-            ->fetchAll();
+        return Database::connect()->query(
+            'SELECT * FROM categories ORDER BY name'
+        )->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     public static function create(string $name): int
     {
-        $stmt = Database::connection()->prepare(
-            'INSERT INTO categories (name) VALUES (:name)'
+        $stmt = Database::connect()->prepare(
+            'INSERT OR IGNORE INTO categories (name) VALUES (?)'
         );
-
-        $stmt->execute(['name' => $name]);
-
-        return (int) Database::connection()->lastInsertId();
+        $stmt->execute([$name]);
+        return (int) Database::connect()->lastInsertId();
     }
 }

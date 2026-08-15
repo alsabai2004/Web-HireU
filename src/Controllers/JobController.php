@@ -1,58 +1,48 @@
 <?php
-
 namespace WebHireU\Controllers;
 
 use WebHireU\Core\Auth;
-use WebHireU\Core\JobSetup;
-use WebHireU\Core\View;
-use WebHireU\Models\Application;
+use WebHireU\Core\Response;
 use WebHireU\Models\Job;
+use WebHireU\Core\Validator;
 
-class JobController
+final class JobController
 {
     public function index(): void
     {
-        JobSetup::run();
-
-        View::render('jobs/index', [
-            'jobs' => Job::all(),
-            'user' => Auth::user(),
+        Response::view('jobs/index', [
+            'jobs' => Job::all(trim($_GET['q'] ?? ''))
         ]);
     }
 
     public function show(): void
     {
-        JobSetup::run();
-
-        $id = (int) ($_GET['id'] ?? 0);
-        $job = Job::find($id);
-
+        $job = Job::find((int)($_GET['id'] ?? 0));
         if (!$job) {
-            http_response_code(404);
-            exit('Job not found');
+            Response::text('Job not found', 404);
+            return;
         }
-
-        View::render('jobs/show', [
-            'job' => $job,
-            'user' => Auth::user(),
-        ]);
+        Response::view('jobs/show', ['job' => $job]);
     }
 
-    public function apply(): void
+    public function create(): void
     {
-        if (!Auth::check()) {
-            header('Location: /login');
-            exit;
+        if (!Auth::check()) Response::redirect('/login');
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $errors = Validator::required($_POST, ['title','description','company']);
+            if ($errors) { Response::view('employer/create-job', ['errors'=>$errors]); return; }
+            Job::create([
+                'title' => trim($_POST['title'] ?? ''),
+                'description' => trim($_POST['description'] ?? ''),
+                'company' => trim($_POST['company'] ?? ''),
+                'location' => trim($_POST['location'] ?? ''),
+                'category_id' => $_POST['category_id'] ?? null,
+                'user_id' => Auth::user()['id']
+            ]);
+            Response::redirect('/jobs');
         }
 
-        JobSetup::run();
-
-        Application::create(
-            (int) Auth::user()['id'],
-            (int) ($_POST['job_id'] ?? 0)
-        );
-
-        header('Location: /jobs');
-        exit;
+        Response::view('employer/create-job');
     }
 }

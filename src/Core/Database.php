@@ -1,29 +1,23 @@
 <?php
-
 namespace WebHireU\Core;
 
 use PDO;
 
-class Database
+final class Database
 {
-    private static ?PDO $connection = null;
+    private static ?PDO $pdo = null;
 
-    public static function connection(): PDO
+    public static function connect(): PDO
     {
-        if (self::$connection === null) {
-            $config = require dirname(__DIR__, 2) . '/config/database.php';
+        if (self::$pdo) return self::$pdo;
 
-            self::$connection = new PDO(
-                $config['dsn'],
-                $config['username'],
-                $config['password'],
-                [
-                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                ]
-            );
-        }
+        $dir = BASE_PATH . '/storage';
+        if (!is_dir($dir)) mkdir($dir, 0755, true);
 
-        return self::$connection;
+        self::$pdo = new PDO('sqlite:' . $dir . '/web_hireu.sqlite');
+        self::$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        self::$pdo->exec('PRAGMA foreign_keys = ON');
+
+        return self::$pdo;
     }
 }

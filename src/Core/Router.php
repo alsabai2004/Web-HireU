@@ -1,8 +1,7 @@
 <?php
-
 namespace WebHireU\Core;
 
-class Router
+final class Router
 {
     private array $routes = [];
 
@@ -16,17 +15,19 @@ class Router
         $this->routes['POST'][$path] = $handler;
     }
 
-    public function dispatch(string $method, string $uri): void
+    public function dispatch(string $method, string $path): void
     {
-        $uri = parse_url($uri, PHP_URL_PATH) ?: '/';
-        $handler = $this->routes[$method][$uri] ?? null;
+        $handler = $this->routes[$method][$path] ?? null;
 
         if (!$handler) {
-            http_response_code(404);
-            echo '404 - Page Not Found';
+            Response::text('404 - Page Not Found', 404);
             return;
         }
 
-        call_user_func($handler);
+        $result = $handler();
+
+        if (is_string($result)) {
+            Response::text($result);
+        }
     }
 }

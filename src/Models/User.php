@@ -1,39 +1,27 @@
 <?php
-
 namespace WebHireU\Models;
 
 use WebHireU\Core\Database;
-use PDO;
+use WebHireU\Core\Security;
 
-class User
+final class User
 {
-    public static function findByEmail(string $email): ?array
+    public static function create(string $name, string $email, string $password): int
     {
-        $stmt = Database::connection()->prepare(
-            'SELECT * FROM users WHERE email = :email LIMIT 1'
+        $db = Database::connect();
+        $stmt = $db->prepare(
+            'INSERT INTO users (name,email,password) VALUES (?,?,?)'
         );
-
-        $stmt->execute(['email' => $email]);
-
-        return $stmt->fetch() ?: null;
+        $stmt->execute([$name, $email, Security::hash($password)]);
+        return (int) $db->lastInsertId();
     }
 
-    public static function create(
-        string $name,
-        string $email,
-        string $password
-    ): int {
-        $stmt = Database::connection()->prepare(
-            'INSERT INTO users (name, email, password, created_at)
-             VALUES (:name, :email, :password, datetime("now"))'
+    public static function findByEmail(string $email): ?array
+    {
+        $stmt = Database::connect()->prepare(
+            'SELECT * FROM users WHERE email = ? LIMIT 1'
         );
-
-        $stmt->execute([
-            'name' => $name,
-            'email' => $email,
-            'password' => password_hash($password, PASSWORD_DEFAULT),
-        ]);
-
-        return (int) Database::connection()->lastInsertId();
+        $stmt->execute([$email]);
+        return $stmt->fetch(\PDO::FETCH_ASSOC) ?: null;
     }
 }

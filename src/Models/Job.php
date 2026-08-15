@@ -1,57 +1,54 @@
 <?php
-
 namespace WebHireU\Models;
 
 use WebHireU\Core\Database;
 
-class Job
+final class Job
 {
-    public static function all(): array
+    public static function all(string $search = ''): array
     {
-        return Database::connection()
-            ->query('SELECT * FROM jobs ORDER BY id DESC')
-            ->fetchAll();
+        $db = Database::connect();
+
+        if ($search !== '') {
+            $stmt = $db->prepare(
+                'SELECT jobs.*, categories.name AS category
+                 FROM jobs LEFT JOIN categories ON categories.id = jobs.category_id
+                 WHERE jobs.title LIKE ? OR jobs.company LIKE ? OR jobs.location LIKE ?
+                 ORDER BY jobs.id DESC'
+            );
+            $q = '%' . $search . '%';
+            $stmt->execute([$q, $q, $q]);
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        }
+
+        return $db->query(
+            'SELECT jobs.*, categories.name AS category
+             FROM jobs LEFT JOIN categories ON categories.id = jobs.category_id
+             ORDER BY jobs.id DESC'
+        )->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     public static function find(int $id): ?array
     {
-        $stmt = Database::connection()->prepare(
-            'SELECT * FROM jobs WHERE id = :id LIMIT 1'
+        $stmt = Database::connect()->prepare(
+            'SELECT jobs.*, categories.name AS category
+             FROM jobs LEFT JOIN categories ON categories.id = jobs.category_id
+             WHERE jobs.id = ?'
         );
-
-        $stmt->execute(['id' => $id]);
-
-        return $stmt->fetch() ?: null;
+        $stmt->execute([$id]);
+        return $stmt->fetch(\PDO::FETCH_ASSOC) ?: null;
     }
 
-    public static function create(
-        string $title,
-        string $company,
-        string $location,
-        string $description
-    ): int {
-        $stmt = Database::connection()->prepare(
-            'INSERT INTO jobs
-            (title, company, location, description, created_at)
-            VALUES (:title, :company, :location, :description, datetime("now"))'
-        );
-
-        $stmt->execute([
-            'title' => $title,
-            'company' => $company,
-            'location' => $location,
-            'description' => $description,
-        ]);
-
-        return (int) Database::connection()->lastInsertId();
-    }
-
-    public static function delete(int $id): void
+    public static function create(array $data): int
     {
-        $stmt = Database::connection()->prepare(
-            'DELETE FROM jobs WHERE id = :id'
+        $stmt = Database::connect()->prepare(
+            'INSERT INTO jobs (title,description,company,location,category_id,user_id)
+             VALUES (?,?,?,?,?,?)'
         );
-
-        $stmt->execute(['id' => $id]);
+        $stmt->execute([
+            $data['title'], $data['description'], $data['company'],
+            $data['location'], $data['category_id'] ?: null, $data['user_id']
+        ]);
+        return (int) Database::connect()->lastInsertId();
     }
 }

@@ -1,37 +1,30 @@
 <?php
-
 namespace WebHireU\Models;
-
 use WebHireU\Core\Database;
 
-class Application
+final class Application
 {
-    public static function create(int $userId, int $jobId): void
+    public static function apply(int $jobId, int $userId): bool
     {
-        $stmt = Database::connection()->prepare(
-            'INSERT OR IGNORE INTO applications
-            (user_id, job_id, created_at)
-            VALUES (:user_id, :job_id, datetime("now"))'
-        );
-
-        $stmt->execute([
-            'user_id' => $userId,
-            'job_id' => $jobId,
-        ]);
+        try {
+            $stmt = Database::connect()->prepare(
+                'INSERT INTO applications (job_id,user_id) VALUES (?,?)'
+            );
+            return $stmt->execute([$jobId, $userId]);
+        } catch (\PDOException $e) {
+            return false;
+        }
     }
 
     public static function forUser(int $userId): array
     {
-        $stmt = Database::connection()->prepare(
+        $stmt = Database::connect()->prepare(
             'SELECT applications.*, jobs.title, jobs.company
-             FROM applications
-             JOIN jobs ON jobs.id = applications.job_id
-             WHERE applications.user_id = :user_id
+             FROM applications JOIN jobs ON jobs.id = applications.job_id
+             WHERE applications.user_id = ?
              ORDER BY applications.id DESC'
         );
-
-        $stmt->execute(['user_id' => $userId]);
-
-        return $stmt->fetchAll();
+        $stmt->execute([$userId]);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 }
