@@ -2,11 +2,11 @@
 
 namespace WebHireU\Core;
 
-class EmployerSetup
+final class EmployerSetup
 {
     public static function run(): void
     {
-        Database::connection()->exec(
+        Database::connect()->exec(
             'CREATE TABLE IF NOT EXISTS employers (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 user_id INTEGER NOT NULL UNIQUE,
