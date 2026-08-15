@@ -16,6 +16,7 @@ use WebHireU\Controllers\JobController;
 use WebHireU\Controllers\ApplicationController;
 use WebHireU\Controllers\EmployerController;
 use WebHireU\Controllers\CategoryController;
+use WebHireU\Controllers\SearchController;
 
 $router = new Router();
 
@@ -25,6 +26,7 @@ $dashboard = new DashboardController();
 $applications = new ApplicationController();
 $employer = new EmployerController();
 $categories = new CategoryController();
+$search = new SearchController();
 
 $router->get('/', fn() => Response::view('home'));
 $router->get('/jobs', [$jobs, 'index']);
@@ -48,5 +50,6 @@ $router->get('/applications', [$applications, 'index']);
 $router->get('/applicants', [$applications, 'applicants']);
 $router->post('/application/status', [$applications, 'status']);
 $router->get('/categories', [$categories, 'index']);
+$router->get('/search', [$search, 'index']);
 
 $router->dispatch(Request::method(), Request::path());
