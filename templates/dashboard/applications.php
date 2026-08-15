@@ -3,26 +3,55 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Applications - Web-HireU</title>
-<link rel="stylesheet" href="/css/web-hireu.css"></head>
+<title>My Applications - Web-HireU</title>
+<link rel="stylesheet" href="/css/web-hireu.css">
+</head>
 <body>
+
 <?php require __DIR__ . '/../partials/nav.php'; ?>
-<h1>My Applications</h1>
 
-<?php foreach (($applications ?? []) as $application): ?>
-<article>
-<h2><?= htmlspecialchars($application['title']) ?></h2>
-<p><?= htmlspecialchars($application['company']) ?></p>
-<p>Applied: <?= htmlspecialchars($application['created_at']) ?></p>
-</article>
-<hr>
-<?php endforeach; ?>
+<main>
+    <div class="hero">
+        <h1>My Applications</h1>
+        <p>Track the jobs you have applied for.</p>
+    </div>
 
-<?php if (empty($applications)): ?>
-<p>You have not applied for any jobs yet.</p>
-<?php endif; ?>
+    <?php if (empty($applications)): ?>
 
-<a href="/jobs">Browse Jobs</a> |
-<a href="/dashboard">Dashboard</a>
+        <div class="card">
+            <h2>No Applications Yet</h2>
+            <p>You have not applied for any jobs yet.</p>
+            <a class="btn" href="/jobs">Browse Jobs</a>
+        </div>
+
+    <?php else: ?>
+
+        <div class="jobs">
+            <?php foreach (($applications ?? []) as $application): ?>
+                <article class="job-card">
+                    <span class="badge">Application</span>
+
+                    <h2><?= htmlspecialchars($application['title']) ?></h2>
+
+                    <p>
+                        <strong><?= htmlspecialchars($application['company']) ?></strong>
+                    </p>
+
+                    <p>
+                        Applied:
+                        <?= htmlspecialchars($application['created_at']) ?>
+                    </p>
+                </article>
+            <?php endforeach; ?>
+        </div>
+
+    <?php endif; ?>
+
+    <div class="actions">
+        <a class="btn" href="/jobs">Browse Jobs</a>
+        <a class="btn" href="/dashboard">Dashboard</a>
+    </div>
+</main>
+
 </body>
 </html>
